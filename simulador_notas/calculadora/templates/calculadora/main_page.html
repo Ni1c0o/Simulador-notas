@@ -1,0 +1,22 @@
+{% load static %} <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Notas</title>
+    <link rel="stylesheet" href="{% static 'calculadora/css/styles.css' %}">
+</head>
+<body>
+
+    <div class="container"> <h1>Simulador de Notas</h1>
+        <h2>Selecciona un Ramo:</h2>
+        
+        <ul>
+            {% for ramo in ramos %}
+                <li><a href="{% url 'calculadora' ramo.id %}">{{ ramo.nombre }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+</html>

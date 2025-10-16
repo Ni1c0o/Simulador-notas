@@ -1,0 +1,130 @@
+/* Un reseteo simple y una fuente más bonita */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background-color: #212222bf;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Centramos el contenido principal */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.636);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Estilos para los títulos */
+h1, h2 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-weight: 400;
+    color: #7f8c8d;
+    margin-bottom: 40px;
+}
+
+/* Quitamos los puntos de la lista */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Estilos para cada elemento de la lista (los enlaces a los ramos) */
+li a {
+    display: block;
+    background-color: #3498db;
+    color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-decoration: none; /* Quita el subrayado del enlace */
+    text-align: center;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Efecto al pasar el mouse por encima */
+li a:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px); /* Mueve el botón un poco hacia arriba */
+}
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box; /* Importante para que el padding no afecte el ancho */
+}
+
+button[type="submit"] {
+    width: 100%;
+    background-color: #2ecc71; /* Un color verde para la acción de calcular */
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+    background-color: #27ae60;
+}
+
+/* Estilos para la caja de resultados */
+.results-box {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #eaf2f8;
+    border-left: 5px solid #3498db;
+    border-radius: 5px;
+}
+
+.results-box h3 {
+    margin-top: 0;
+}
+
+.results-box .estado {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Estilo para el enlace de "Volver" */
+.back-link-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.back-link {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}

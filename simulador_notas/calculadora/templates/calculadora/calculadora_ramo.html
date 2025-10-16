@@ -1,0 +1,42 @@
+{% load static %} <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ ramo.nombre }} - Simulador</title>
+    <link rel="stylesheet" href="{% static 'calculadora/css/styles.css' %}">
+</head>
+<body>
+
+    <div class="container"> <h2>{{ ramo.nombre }}</h2>
+        
+        <form method="post" class="calculator-form">
+            {% csrf_token %}
+
+            {% for evaluacion in evaluaciones %}
+                <div class="form-group">
+                    <label>{{ evaluacion.nombre }} (Ponderación: {{ evaluacion.ponderacion|floatformat:2 }})</label>
+                    <input type="number" name="evaluacion-{{ evaluacion.id }}" step="1" min="0" max="100" value="{{ evaluacion.nota_ingresada|default:'' }}">
+                </div>
+            {% endfor %}
+
+            <button type="submit">Calcular</button>
+        </form>
+
+        {% if resultado %}
+            <div class="results-box">
+                <h3>Resultados:</h3>
+                <p><strong>Promedio Actual:</strong> {{ resultado.promedio_actual|floatformat:2 }}</p>
+                <p><strong>Nota Necesaria en lo Restante:</strong> {{ resultado.nota_necesaria|floatformat:2 }}</p>
+                <p class="estado"><strong>Estado:</strong> {{ resultado.mensaje }}</p>
+            </div>
+        {% endif %}
+
+        <div class="back-link-container">
+            <a href="{% url 'main_page' %}" class="back-link">← Volver a la lista de ramos</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
