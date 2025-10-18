@@ -19,7 +19,7 @@ def calculadora_ramo(request, ramo_id):
 
         # --- INICIO DE LA LÓGICA CONDICIONAL ---
         if ramo.nombre == 'MAT071':
-            # --- Lógica especial SOLO para Cálculo I ---
+            # --- Lógica especial SOLO para MAT071 ---
             
             # 1. Separamos las notas de controles del resto de evaluaciones (certámenes)
             notas_controles = []
@@ -67,6 +67,79 @@ def calculadora_ramo(request, ramo_id):
                 if request.POST.get(f'evaluacion-{evaluacion.id}'):
                     ponderacion_acumulada += evaluacion.ponderacion
 
+        elif ramo.nombre == 'FIS111':
+            # --- Lógica especial SOLO para FIS111 ---
+            dicc = {'notas_controles': [], 'notas_tareas': [], 'notas_experiencias': [], 'notas_quiz': [], 'notas_certamenes': []}
+            # Al principio de la lógica de FIS111, después de definir 'dicc'
+
+            notas_para_promedio_simple = []
+            ponderacion_acumulada = 0.0
+            for evaluacion in evaluaciones:                
+                nombre_input = f'evaluacion-{evaluacion.id}'
+                nota_str = request.POST.get(nombre_input)
+                evaluacion.nota_ingresada = nota_str
+                if not nota_str:
+                    continue
+                nota = float(nota_str)
+                notas_para_promedio_simple.append(nota)
+
+                if 'Control' in evaluacion.nombre:
+                    if nota_str:
+                        dicc['notas_controles'].append(float(nota_str)*5)
+                elif 'Tarea' in evaluacion.nombre:
+                    if nota_str:
+                        dicc['notas_tareas'].append(float(nota_str))
+                elif 'Experiencia' in evaluacion.nombre:
+                    if nota_str:
+                        dicc['notas_experiencias'].append(float(nota_str))
+                elif 'Quiz' in evaluacion.nombre:
+                    if nota_str:
+                        dicc['notas_quiz'].append(float(nota_str))
+                elif 'Certamen' in evaluacion.nombre:
+                    if nota_str:
+                        dicc['notas_certamenes'].append(float(nota_str))           
+            
+            certamenes = dicc['notas_certamenes']
+            certamenes.sort()
+            PC = sum(certamenes)/3
+                        
+            controles = dicc['notas_controles']
+            controles.sort()
+            if len(controles) > 5:
+                    notas_a_considerar = controles[1:]
+            else:
+                notas_a_considerar = controles
+            PQ = sum(notas_a_considerar)/5
+            
+
+            tareas = dicc['notas_tareas']
+            tareas.sort()
+            if len(tareas) > 5:
+                    notas_a_considerar = tareas[1:]
+            else:
+                notas_a_considerar = tareas
+            PT = sum(notas_a_considerar)/5
+            
+
+            experiencias = dicc['notas_experiencias']
+            experiencias.sort()
+            if len(experiencias) > 6:
+                    notas_a_considerar = experiencias[1:]
+            else:
+                notas_a_considerar = experiencias
+            promedio_exp = sum(notas_a_considerar)/6
+            
+            quizes = dicc['notas_quiz']
+            promedio_qui = sum(quizes)/3
+
+            NL = (0.5*promedio_qui) + (0.5*promedio_exp)
+            nota_final = (0.75 * PC) + (0.10 * PT) + (0.15 * PQ)
+            nota_acumulada = (0.8 * nota_final) + (0.20 * NL)
+            
+            for evaluacion in evaluaciones:
+                if request.POST.get(f'evaluacion-{evaluacion.id}'):
+                    ponderacion_acumulada += evaluacion.ponderacion
+        
         else:
             # --- Lógica genérica para todos los demás ramos (la que ya tenías) ---
             for evaluacion in evaluaciones:
@@ -85,8 +158,7 @@ def calculadora_ramo(request, ramo_id):
         # -------------------------------------------------------------------
         promedio_actual = 0
         if ponderacion_acumulada > 0:
-            promedio_actual = nota_acumulada / ponderacion_acumulada
-        
+            promedio_actual = sum(notas_para_promedio_simple) / len(notas_para_promedio_simple) if notas_para_promedio_simple else 0.0
         ponderacion_restante = 1.0 - ponderacion_acumulada
         mensaje = ""
         nota_necesaria = 0
